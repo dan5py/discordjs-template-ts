@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "strict": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "removeComments": true,
+    "typeRoots": ["node_modules/@types"],
+    "sourceMap": false,
+    "baseUrl": ".",
+    // "rootDir": "./src",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["src/*"],
+      "@config/*": ["./config/*"]
+    }
+  },
+  "include": ["./**/*.ts", "types/command.d.tsdwa"],
+  "exclude": ["node_modules", "dist"]
+}

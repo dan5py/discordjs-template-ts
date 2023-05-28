@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "description": "The list of available slash commands",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "The name of the command"
+      },
+      "description": {
+        "type": "string",
+        "description": "The description of the command"
+      },
+      "usage": {
+        "type": "string",
+        "description": "The usage of the command"
+      },
+      "category": {
+        "type": "string",
+        "description": "The category of the command (matches the folder path, e.g. `general/info`)"
+      },
+      "nsfw": {
+        "type": "boolean",
+        "description": "Whether this command is NSFW or not",
+        "default": false
+      },
+      "options": {
+        "type": "array",
+        "description": "The list of options for this command",
+        "items": {
+          "type": "object",
+          "description": "An option for a command",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the option"
+            },
+            "description": {
+              "type": "string",
+              "description": "The description of the option"
+            },
+            "type": {
+              "enum": [
+                "STRING",
+                "BOOLEAN",
+                "NUMBER",
+                "INTEGER",
+                "ROLE",
+                "USER",
+                "CHANNEL",
+                "MENTIONABLE",
+                "ATTACHMENT"
+              ],
+              "description": "The type of the option"
+            },
+            "required": {
+              "type": "boolean",
+              "description": "Whether this option is required or not",
+              "default": false
+            },
+            "choices": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "The name of the choice"
+                  },
+                  "value": {
+                    "type": ["string", "number"],
+                    "description": "The value of the choice"
+                  }
+                }
+              },
+              "description": "The list of choices for this option (INTEGER)"
+            },
+            "minValue": {
+              "type": "number",
+              "description": "The minimum value of the option (INTEGER, NUMBER)"
+            },
+            "maxValue": {
+              "type": "number",
+              "description": "The maximum value of the option (INTEGER, NUMBER)"
+            }
+          },
+          "required": ["name", "description", "type"]
+        }
+      }
+    },
+    "required": ["name", "description"]
+  }
+}

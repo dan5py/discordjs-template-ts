@@ -1,0 +1,28 @@
+[
+  {
+    "name": "ping",
+    "description": "Show the latency of the bot",
+    "options": [
+      {
+        "name": "emoji",
+        "description": "Give me an emoji",
+        "type": "STRING",
+        "choices": [
+          {
+            "name": "🏓",
+            "value": "🏓"
+          },
+          {
+            "name": "👍",
+            "value": "👍"
+          },
+          {
+            "name": "👎",
+            "value": "👎"
+          }
+        ],
+        "required": false
+      }
+    ]
+  }
+]
