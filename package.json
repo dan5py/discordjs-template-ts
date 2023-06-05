@@ -1,13 +1,13 @@
 {
   "name": "discordjs-template-ts",
   "description": "A template for discord.js with TypeScript",
-  "version": "14.11.0-0.1.0",
+  "version": "14.11.0-0.1.1",
   "license": "ISC",
   "main": "dist/src/index.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "cross-env NODE_ENV=development nodemon",
     "build": "tsc && tsc-alias",
-    "start": "node ./dist/src/index.js"
+    "start": "cross-env NODE_ENV=production node ./dist/src/index.js"
   },
   "dependencies": {
     "chalk": "4.1.2",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.2.5",
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.22",
     "tsc-alias": "^1.8.6",
     "typescript": "^5.0.4"

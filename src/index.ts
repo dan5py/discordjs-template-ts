@@ -1,14 +1,14 @@
-require('module-alias/register');
-
 import dotenv from 'dotenv';
+// Load .env file
+dotenv.config();
+
+import '@/lib/aliases';
 import { GatewayIntentBits, REST, Routes } from 'discord.js';
 import { DiscordClient } from '@/lib/client';
 import { Logger } from '@/lib/logger';
 import { loadSlashCommands } from '@/loaders/slashCommands';
 import { handleEvents } from '@/handlers/eventHandler';
 
-// Load .env file
-dotenv.config();
 if (process.env.DISCORD_TOKEN === undefined) {
   throw new Error('DISCORD_TOKEN is not defined');
 }
