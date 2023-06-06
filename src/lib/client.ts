@@ -4,7 +4,7 @@ import { Client, ClientOptions } from 'discord.js';
  * Singleton Discord client.
  */
 export class DiscordClient extends Client {
-  private static instance: DiscordClient;
+  private static _instance: DiscordClient;
 
   private constructor(options: ClientOptions) {
     super(options);
@@ -15,15 +15,11 @@ export class DiscordClient extends Client {
    * @param options Discord client options to use when creating a new instance.
    * @returns `DiscordClient` Discord client instance.
    */
-  public static getInstance(options?: ClientOptions): DiscordClient {
-    if (!DiscordClient.instance) {
-      const defaultOptions: ClientOptions = {
-        intents: [],
-      };
-
-      DiscordClient.instance = new DiscordClient(options || defaultOptions);
+  public static getInstance(options: ClientOptions = { intents: [] }): DiscordClient {
+    if (!DiscordClient._instance) {
+      DiscordClient._instance = new DiscordClient(options);
     }
 
-    return DiscordClient.instance;
+    return DiscordClient._instance;
   }
 }

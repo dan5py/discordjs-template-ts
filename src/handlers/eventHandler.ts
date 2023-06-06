@@ -8,16 +8,14 @@ import { Events, Awaitable } from 'discord.js';
  * Subdirectories in `events` folder
  */
 const eventsSubdirectories = ['client', 'guild'] as const;
-/**
- * Current client instance
- */
-const client = DiscordClient.getInstance();
 
 /**
  * Load all events file in `events` folder.
  * Only `.ts` files are loaded and files starting with an underscode (`_`) are ignored.
  */
 export function handleEvents() {
+  const client = DiscordClient.getInstance();
+
   const loadEvents = async (dir: string) => {
     let loadedEvents = 0;
     const eventFiles = fs
