@@ -1,4 +1,4 @@
-import {
+import type {
   SlashCommandAttachmentOption,
   SlashCommandBooleanOption,
   SlashCommandChannelOption,
@@ -12,6 +12,7 @@ import {
   MessageContextMenuCommandInteraction,
   UserContextMenuCommandInteraction,
   CacheType,
+  PermissionsBitField,
 } from 'discord.js';
 
 export type SlashCommandOption =
@@ -31,7 +32,7 @@ export type SlashCommandInteraction =
   | UserContextMenuCommandInteraction;
 
 export interface SlashCommand {
-  permissions?: string | number | bigint | null | undefined;
+  permissions?: (typeof PermissionsBitField.Flags)[keyof typeof PermissionsBitField.Flags];
   execute: (interaction: SlashCommandInteraction) => Promise<void>;
 }
 
@@ -74,10 +75,18 @@ export interface NumberOptionChoice {
 }
 
 export interface SlashCommandConfig {
-  name: string | undefined;
+  name?: string | undefined;
   description: string | undefined;
-  options?: SlashCommandOptionConfig[];
+  options?: (
+    | SlashCommandOptionConfig
+    | SlashCommandStringOptionConfig
+    | SlashCommandNumberOptionConfig
+  )[];
   nsfw?: boolean;
   category?: string;
   usage?: string;
+  /**
+   * Used to execute the command after loading it
+   */
+  fileName?: string;
 }

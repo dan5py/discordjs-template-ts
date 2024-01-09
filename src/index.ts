@@ -26,11 +26,13 @@ const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
   try {
     Logger.debug('Started refreshing application (/) commands.');
 
-    const slashCommands = await loadSlashCommands();
+    const { slashCommands, slashConfigs } = await loadSlashCommands();
 
     const res: any = await rest.put(Routes.applicationCommands(process.env.DISCORD_APP_ID!), {
       body: slashCommands,
     });
+
+    client.slashConfigs = slashConfigs;
 
     Logger.debug(`Successfully reloaded ${res.length} (/) commands.`);
     client.login(process.env.DISCORD_TOKEN);

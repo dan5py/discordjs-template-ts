@@ -1,5 +1,5 @@
 import path from 'path';
-import {
+import type {
   SlashCommand,
   SlashCommandConfig,
   SlashCommandOptionConfig,
@@ -7,41 +7,64 @@ import {
   SlashCommandNumberOptionConfig,
   SlashCommandStringOptionConfig,
 } from '@/types/command';
-import _slashCommandsConfig from '@config/slashCommands.json';
 import { SlashCommandBuilder } from 'discord.js';
 import { Logger } from '@/lib/logger';
+import fs from 'fs-extra';
 
-const slashCommandsConfig = _slashCommandsConfig as SlashCommandConfig[];
+const SLASH_DIR = path.join(__dirname, '../commands/slash');
+const IS_DEV = process.env.NODE_ENV !== 'production';
+const FILE_EXT = IS_DEV ? '.ts' : '.js';
 
 /**
  * Loads all slash commands from the slash folder
  * @returns An array of slash command builders
  */
 export async function loadSlashCommands() {
-  const slashCommands = [];
+  const slashCommands: SlashCommandBuilder[] = [];
+  const slashConfigs: SlashCommandConfig[] = [];
 
-  for (const slashCommandConfig of slashCommandsConfig) {
-    if (!slashCommandConfig.name) throw new Error(`Missing name in slash command`);
+  const slashDirFiles = await fs.readdir(SLASH_DIR, {
+    recursive: true,
+  });
+  const slashCommandFiles = slashDirFiles
+    .map((file) => file.toString())
+    .filter((file) => {
+      return file.endsWith(FILE_EXT);
+    });
 
-    let commandPath = slashCommandConfig.name;
-    if (slashCommandConfig.category !== undefined) {
-      commandPath = path.join(slashCommandConfig.category, commandPath);
-    }
-    commandPath = path.join('slash/', commandPath);
+  for (const scFile of slashCommandFiles) {
+    const fileBasename = path.basename(scFile, FILE_EXT);
+    const fileNameNoExt = fileBasename.replace(FILE_EXT, '');
     try {
       // Import the module to check if it exists and has a default export
-      const commandModule = await import(`@/commands/${commandPath}`);
+      const commandModule = await import(`@/commands/slash/${fileNameNoExt}`);
+
       if (!commandModule.default) continue;
-      const command: SlashCommand = commandModule.default;
-      slashCommands.push(buildSlashCommand(slashCommandConfig, command));
+      const { command, config }: { command: SlashCommand; config: SlashCommandConfig } =
+        commandModule.default;
+
+      if (!config) {
+        Logger.error(`Missing config in slash command "${fileBasename}"`);
+        continue;
+      }
+
+      if (config?.name == undefined) {
+        config.name = fileBasename;
+      }
+
+      // Save the file name in the config (used during execution)
+      config.fileName = fileNameNoExt;
+
+      slashCommands.push(buildSlashCommand(config, command));
+      slashConfigs.push(config);
     } catch (err) {
-      Logger.error(`Error loading slash command ${slashCommandConfig.name}: \n\t${err}`);
+      Logger.error(`Error loading slash command "${fileBasename}": \n\t${err}`);
     }
   }
 
   Logger.debug(`Loaded ${slashCommands.length} slash commands`);
 
-  return slashCommands;
+  return { slashCommands, slashConfigs };
 }
 
 /**

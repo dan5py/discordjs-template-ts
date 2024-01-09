@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { DiscordClient } from '@/lib/client';
 import { Logger } from '@/lib/logger';
-import { Events, Awaitable } from 'discord.js';
+import { Events, type Awaitable } from 'discord.js';
 
 /**
  * Subdirectories in `events` folder

@@ -1,5 +1,17 @@
-import { SlashCommand } from '@/types/command';
-import { PermissionFlagsBits as Permissions } from 'discord.js';
+import { SlashCommand, SlashCommandConfig } from '@/types/command';
+
+const config: SlashCommandConfig = {
+  description: 'Show the latency of the bot',
+  usage: '/ping',
+  options: [
+    {
+      name: 'emoji',
+      description: 'The emoji to use',
+      type: 'STRING',
+      required: false,
+    },
+  ],
+};
 
 const command: SlashCommand = {
   // permissions: 0,
@@ -14,4 +26,4 @@ const command: SlashCommand = {
   },
 };
 
-export default command;
+export default { command, config };

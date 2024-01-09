@@ -16,12 +16,11 @@
     "sourceMap": false,
     "baseUrl": ".",
     // "rootDir": "./src",
-    "outDir": "./dist",
+    "outDir": "./dist/src",
     "paths": {
-      "@/*": ["src/*"],
-      "@config/*": ["./config/*"]
+      "@/*": ["src/*"]
     }
   },
-  "include": ["./**/*.ts", "types/command.d.tsdwa"],
+  "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

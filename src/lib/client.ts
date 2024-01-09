@@ -1,10 +1,12 @@
-import { Client, ClientOptions } from 'discord.js';
+import type { SlashCommandConfig } from '@/types/command';
+import { Client, type ClientOptions } from 'discord.js';
 
 /**
  * Singleton Discord client.
  */
 export class DiscordClient extends Client {
   private static _instance: DiscordClient;
+  public slashConfigs: SlashCommandConfig[] = [];
 
   private constructor(options: ClientOptions) {
     super(options);
