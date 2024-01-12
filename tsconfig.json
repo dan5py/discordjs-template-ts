@@ -15,10 +15,9 @@
     "typeRoots": ["node_modules/@types"],
     "sourceMap": false,
     "baseUrl": ".",
-    // "rootDir": "./src",
-    "outDir": "./dist/src",
+    "outDir": "./dist",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["./**/*.ts"],
