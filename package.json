@@ -1,34 +1,31 @@
 {
   "name": "discordjs-template-ts",
-  "description": "A template for discord.js with TypeScript",
-  "version": "14.14.1-0.1.3",
+  "description": "Template for a discord.js bot with TypeScript",
+  "version": "14.14.1-0.1.4",
   "license": "ISC",
   "main": "dist/index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon",
-    "build": "tsc && tsc-alias",
+    "build": "tsup && tsc-alias",
     "start": "cross-env NODE_ENV=production node ./dist/index.js"
   },
   "dependencies": {
     "chalk": "4.1.2",
     "discord.js": "^14.14.1",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.4.5",
     "fs-extra": "^11.2.0",
-    "module-alias": "^2.2.2"
-  },
-  "_moduleAliases": {
-    "@": "dist",
-    "@config": "dist/config"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^20.2.5",
+    "@types/node": "^20.11.20",
     "cross-env": "^7.0.3",
-    "nodemon": "^3.0.2",
-    "ts-node": "^10.9.2",
-    "tsc-alias": "^1.8.6",
-    "tsconfig-paths": "^4.2.0",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "tsc-alias": "^1.8.8",
     "tslib": "^2.6.2",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   }
 }

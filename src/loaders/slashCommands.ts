@@ -1,4 +1,4 @@
-import path from 'path';
+import path from "path";
 import type {
   SlashCommand,
   SlashCommandConfig,
@@ -6,14 +6,15 @@ import type {
   SlashCommandOption,
   SlashCommandNumberOptionConfig,
   SlashCommandStringOptionConfig,
-} from '@/types/command';
-import { SlashCommandBuilder } from 'discord.js';
-import { Logger } from '@/lib/logger';
-import fs from 'fs-extra';
+} from "@/types/command";
+import { SlashCommandBuilder } from "discord.js";
+import { Logger } from "@/lib/logger";
+import fs from "fs-extra";
+import { env } from "@/env";
 
-const SLASH_DIR = path.join(__dirname, '../commands/slash');
-const IS_DEV = process.env.NODE_ENV !== 'production';
-const FILE_EXT = IS_DEV ? '.ts' : '.js';
+const SLASH_DIR = path.join(__dirname, "../commands/slash");
+const IS_DEV = env.NODE_ENV !== "production";
+const FILE_EXT = IS_DEV ? ".ts" : ".js";
 
 /**
  * Loads all slash commands from the slash folder
@@ -34,10 +35,12 @@ export async function loadSlashCommands() {
 
   for (const scFile of slashCommandFiles) {
     const fileBasename = path.basename(scFile, FILE_EXT);
-    const fileNameNoExt = fileBasename.replace(FILE_EXT, '');
+    const fileWithExt = path.basename(scFile);
+
     try {
       // Import the module to check if it exists and has a default export
-      const commandModule = await import(`@/commands/slash/${fileNameNoExt}`);
+      const rawModule = await import(`../commands/slash/${fileWithExt}`);
+      const commandModule = rawModule.default?.default ? rawModule.default : rawModule;
 
       if (!commandModule.default) continue;
       const { command, config }: { command: SlashCommand; config: SlashCommandConfig } =
@@ -53,7 +56,7 @@ export async function loadSlashCommands() {
       }
 
       // Save the file name in the config (used during execution)
-      config.fileName = fileNameNoExt;
+      config.fileName = fileWithExt;
 
       slashCommands.push(buildSlashCommand(config, command));
       slashConfigs.push(config);
@@ -101,7 +104,7 @@ function addCommandOptions(
 ) {
   options.forEach((option) => {
     switch (option.type) {
-      case 'STRING': {
+      case "STRING": {
         commandBuilder.addStringOption((optionBuilder) => {
           const stringOption = option as SlashCommandStringOptionConfig;
           setGenericOptionInfo(optionBuilder, stringOption);
@@ -110,7 +113,7 @@ function addCommandOptions(
         });
         break;
       }
-      case 'INTEGER': {
+      case "INTEGER": {
         commandBuilder.addIntegerOption((optionBuilder) => {
           const integerOption = option as SlashCommandNumberOptionConfig;
           setGenericOptionInfo(optionBuilder, integerOption);
@@ -121,7 +124,7 @@ function addCommandOptions(
         });
         break;
       }
-      case 'NUMBER': {
+      case "NUMBER": {
         commandBuilder.addNumberOption((optionBuilder) => {
           const numberOption = option as SlashCommandNumberOptionConfig;
           setGenericOptionInfo(optionBuilder, option);
@@ -131,42 +134,42 @@ function addCommandOptions(
           return optionBuilder;
         });
       }
-      case 'BOOLEAN': {
+      case "BOOLEAN": {
         commandBuilder.addBooleanOption((optionBuilder) => {
           setGenericOptionInfo(optionBuilder, option);
           return optionBuilder;
         });
         break;
       }
-      case 'USER': {
+      case "USER": {
         commandBuilder.addUserOption((optionBuilder) => {
           setGenericOptionInfo(optionBuilder, option);
           return optionBuilder;
         });
         break;
       }
-      case 'CHANNEL': {
+      case "CHANNEL": {
         commandBuilder.addChannelOption((optionBuilder) => {
           setGenericOptionInfo(optionBuilder, option);
           return optionBuilder;
         });
         break;
       }
-      case 'ROLE': {
+      case "ROLE": {
         commandBuilder.addRoleOption((optionBuilder) => {
           setGenericOptionInfo(optionBuilder, option);
           return optionBuilder;
         });
         break;
       }
-      case 'MENTIONABLE': {
+      case "MENTIONABLE": {
         commandBuilder.addMentionableOption((optionBuilder) => {
           setGenericOptionInfo(optionBuilder, option);
           return optionBuilder;
         });
         break;
       }
-      case 'ATTACHMENT': {
+      case "ATTACHMENT": {
         commandBuilder.addAttachmentOption((optionBuilder) => {
           setGenericOptionInfo(optionBuilder, option);
           return optionBuilder;

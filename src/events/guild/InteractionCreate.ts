@@ -1,7 +1,7 @@
-import { type Interaction, type CacheType } from 'discord.js';
-import type { SlashCommand, SlashCommandInteraction } from '@/types/command';
-import { Logger } from '@/lib/logger';
-import { type DiscordClient } from '@/lib/client';
+import { type Interaction, type CacheType } from "discord.js";
+import type { SlashCommand, SlashCommandInteraction } from "@/types/command";
+import { Logger } from "@/lib/logger";
+import { type DiscordClient } from "@/lib/client";
 
 /**
  * Application command event
@@ -27,20 +27,21 @@ async function executeSlashCommand(commandName: string, interaction: SlashComman
     if (!commandConfig) {
       Logger.warn(`Slash command "${commandName}" not found in config`);
       await interaction.reply({
-        content: 'This command is not available!',
+        content: "This command is not available!",
         ephemeral: true,
       });
       return;
     }
 
+    const rawModule = await import(`../../commands/slash/${commandConfig.fileName}`);
     const { command }: { command: SlashCommand } = (
-      await import(`@/commands/slash/${commandConfig.fileName}`)
+      rawModule.default?.default ? rawModule.default : rawModule
     ).default;
     await command.execute(interaction);
   } catch (error) {
     Logger.error(`Error executing slash command "${commandName}": \n\t${error}`);
     await interaction.reply({
-      content: 'There was an error while executing this command!',
+      content: "There was an error while executing this command!",
       ephemeral: true,
     });
   }
