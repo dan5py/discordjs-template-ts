@@ -1,7 +1,7 @@
 {
   "name": "discordjs-template-ts",
   "description": "Template for a discord.js bot with TypeScript",
-  "version": "14.14.1-0.1.4",
+  "version": "14.14.1-0.1.5",
   "license": "ISC",
   "main": "dist/index.js",
   "scripts": {
