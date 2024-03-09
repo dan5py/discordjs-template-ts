@@ -1,4 +1,4 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from "tsup"
 
 export default defineConfig({
   entry: ["./src/**/*.ts"],
@@ -8,8 +8,8 @@ export default defineConfig({
   outDir: "dist",
   bundle: false,
   esbuildOptions(options, ctx) {
-    options.outbase = "./src";
+    options.outbase = "./src"
   },
   dts: false,
   sourcemap: false,
-});
+})

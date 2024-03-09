@@ -1,4 +1,4 @@
-import { SlashCommand, SlashCommandConfig } from "@/types/command";
+import { SlashCommand, SlashCommandConfig } from "@/types/command"
 
 const config: SlashCommandConfig = {
   description: "Show the latency of the bot",
@@ -11,19 +11,22 @@ const config: SlashCommandConfig = {
       required: false,
     },
   ],
-};
+}
 
 const command: SlashCommand = {
   // permissions: 0,
   execute: async (interaction) => {
-    const ping = await interaction.reply({ content: "Pinging...", fetchReply: true });
+    const ping = await interaction.reply({
+      content: "Pinging...",
+      fetchReply: true,
+    })
 
-    const emoji = interaction.options.get("emoji")?.value ?? "🏓";
+    const emoji = interaction.options.get("emoji")?.value ?? "🏓"
 
     await interaction.editReply(
       `Pong ${emoji}! Latency is ${ping.createdTimestamp - interaction.createdTimestamp}ms.`
-    );
+    )
   },
-};
+}
 
-export default { command, config };
+export default { command, config }
