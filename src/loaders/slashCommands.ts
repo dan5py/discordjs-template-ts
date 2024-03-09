@@ -36,11 +36,11 @@ export async function loadSlashCommands() {
 
   for (const scFile of slashCommandFiles) {
     const fileBasename = path.basename(scFile, FILE_EXT)
-    const fileWithExt = path.basename(scFile)
+    const fileDirectory = path.dirname(scFile).replaceAll(path.sep, "/")
 
     try {
       // Import the module to check if it exists and has a default export
-      const rawModule = await import(`../commands/slash/${fileWithExt}`)
+      const rawModule = await import(`../commands/slash/${scFile}`)
       const commandModule = rawModule.default?.default
         ? rawModule.default
         : rawModule
@@ -62,7 +62,20 @@ export async function loadSlashCommands() {
       }
 
       // Save the file name in the config (used during execution)
-      config.fileName = fileWithExt
+      config.fileName = scFile
+
+      // Get the first directory name of the file directory that isn't inside parenthesis
+      const directories = fileDirectory.split("/")
+      const categoryIndex = directories.findIndex(
+        (dir) => !dir.startsWith("(") && !dir.endsWith(")")
+      )
+      const category =
+        categoryIndex !== -1
+          ? directories.slice(categoryIndex).join("/").trim()
+          : undefined
+      if (category && category !== ".") {
+        config.category = category
+      }
 
       slashCommands.push(buildSlashCommand(config, command))
       slashConfigs.push(config)
