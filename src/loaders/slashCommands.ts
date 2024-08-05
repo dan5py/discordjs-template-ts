@@ -164,6 +164,7 @@ function addCommandOptions(
             optionBuilder.setMaxValue(numberOption.maxValue)
           return optionBuilder
         })
+        break
       }
       case "BOOLEAN": {
         commandBuilder.addBooleanOption((optionBuilder) => {
